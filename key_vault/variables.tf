@@ -64,7 +64,7 @@ variable "purge_protection_enabled" {
 }
 
 variable "soft_delete_retention_days" {
-  description = "Optional) The number of days that items should be retained for once soft-deleted. This value can be between 7 and 90 (the default) days."
+  description = "(Optional) The number of days that items should be retained for once soft-deleted. This value can be between 7 and 90 (the default) days."
   type        = number
   default     = 90
 }
@@ -73,7 +73,7 @@ variable "contact" {
   description = "(Optional) One or more contact block as defined below."
   type        = map(any)
   default = {
-    email = "pedd-infra-team-aaaafl56tpweh7bjw3evetmiqm@truck1-workspace.slack.com"
+    email = "f.ferrinho@kigroup.de"
   }
 }
 
@@ -85,5 +85,5 @@ variable "tags" {
 
 variable "virtual_network_name" {
   description = "The virtual network name associated with the resource group."
-  type = string
+  type        = string
 }

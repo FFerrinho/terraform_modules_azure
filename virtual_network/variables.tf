@@ -25,11 +25,6 @@ variable "bgp_community" {
   default     = null
 }
 
-variable "ddos_protection_plan" {
-  description = "(Optional) A ddos_protection_plan block as documented in https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network#argument-reference."
-  type        = map(string)
-  default     = null
-}
 
 variable "dns_servers" {
   description = "(Optional) List of IP addresses of DNS servers"

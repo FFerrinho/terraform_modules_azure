@@ -20,8 +20,8 @@ variable "address_prefixes" {
 }
 
 variable "delegation" {
-  description = "One or more delegation blocks."
-  type        = map(string)
+  description = "(Optional) One or more delegation blocks as defined in https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet#argument-reference."
+  type        = map(any)
   default     = null
 }
 

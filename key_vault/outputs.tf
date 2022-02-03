@@ -1,4 +1,4 @@
-output "key_vault_id" {
+output "id" {
   description = "The ID for the Azure Key Vault."
   value       = azurerm_key_vault.key_vault.id
 }

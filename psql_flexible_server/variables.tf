@@ -78,7 +78,7 @@ variable "point_in_time_restore_time_in_utc" {
 }
 
 variable "sku_name" {
-  description = "(Optional) The SKU Name for the PostgreSQL Flexible Server. The name of the SKU, follows the tier + name pattern (e.g. B_Standard_B1ms, GP_Standard_D2s_v3, MO_Standard_E4s_v3)."
+  description = "(Optional) The SKU Name for the PostgreSQL Flexible Server. The name of the SKU, follows the tier + name pattern (e.g. B_Standard_B1ms, GP_Standard_D2s_v3, MO_Standard_E4s_v3). This is required when create_mode is set to Default."
   type        = string
   default     = null
 }
@@ -103,8 +103,8 @@ variable "tags" {
   }
 }
 
-variable "version" {
-  description = "(Optional) The version of PostgreSQL Flexible Server to use. Possible values are 11,12 and 13. Required when create_mode is Default. Changing this forces a new PostgreSQL Flexible Server to be created."
+variable "psql_version" {
+  description = "(Optional) The version of PostgreSQL Flexible Server to use. Possible values are 11,12 and 13. Required when create_mode is Default. Changing this forces a new PostgreSQL Flexible Server to be created. This is required when create_mode is set to Default."
   type        = string
   default     = null
 }

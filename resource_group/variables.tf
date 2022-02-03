@@ -13,6 +13,6 @@ variable "tags" {
   description = "The tags to assign to the resource group."
   type        = map(string)
   default = {
-    Managed = Terraform
+    Managed = "Terraform"
   }
 }
