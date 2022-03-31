@@ -1,22 +1,26 @@
-resource "azurerm_subnet" "vpn_subnet" {
+resource "azurerm_subnet" "gateway" {
   name                 = "GatewaySubnet"
   resource_group_name  = var.resource_group_name
-  virtual_network_name = var.virtual_network_name
-  address_prefixes     = var.address_prefixes
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  address_prefixes     = var.gateway_cidr
 }
 
-resource "azurerm_public_ip" "vpn_pip" {
-  name                = "pip-${var.name}"
+resource "azurerm_public_ip" "gateway" {
+  name                = "pip-${var.name}-vpn-gateway-${random_uuid.random_uuid.result}"
   resource_group_name = var.resource_group_name
   location            = var.location
   sku                 = var.pip_sku
   allocation_method   = var.allocation_method
   availability_zone   = var.availability_zone
   tags                = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "azurerm_virtual_network_gateway" "vnet_gateway" {
-  name                = "vnetgw-${var.name}"
+  name                = "vgw-${var.name}"
   resource_group_name = var.resource_group_name
   location            = var.location
   type                = "Vpn"
@@ -25,13 +29,13 @@ resource "azurerm_virtual_network_gateway" "vnet_gateway" {
   generation          = var.generation
 
   ip_configuration {
-    name                 = "vnetgw-${var.name}-ip-configuration"
-    subnet_id            = azurerm_subnet.vpn_subnet.id
-    public_ip_address_id = azurerm_public_ip.vpn_pip.id
+    name                 = "vgw-${var.name}-ip-configuration"
+    subnet_id            = azurerm_subnet.gateway.id
+    public_ip_address_id = azurerm_public_ip.gateway.id
   }
 
   vpn_client_configuration {
-    address_space = var.address_space
+    address_space = var.vpn_cidr
     /* aad_tenant    = var.aad_tenant
     aad_audience  = var.aad_audience
     aad_issuer    = var.aad_issuer */
@@ -47,4 +51,3 @@ resource "azurerm_virtual_network_gateway" "vnet_gateway" {
 
   tags = var.tags
 }
-

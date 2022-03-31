@@ -13,7 +13,7 @@ variable "virtual_network_name" {
   type        = string
 }
 
-variable "address_prefixes" {
+variable "gateway_cidr" {
   description = "The CIDR blocks to use with the subnet."
   type        = set(string)
 }
@@ -37,8 +37,12 @@ variable "allocation_method" {
 
 variable "availability_zone" {
   description = "The availability zone for the Public IP."
-  type        = number
-  default     = 1
+  type        = any
+  default     = "Zone-Redundant"
+  validation {
+    condition     = var.availability_zone == 1 || var.availability_zone == 2 || var.availability_zone == 3 || var.availability_zone == "Zone-Redundant" || var.availability_zone == "No-Zone"
+    error_message = "Accepted values are 1, 2, 3, Zone-Redundant or No-Zone."
+  }
 }
 
 variable "vpn_type" {
@@ -59,7 +63,7 @@ variable "generation" {
   default     = "Generation2"
 }
 
-variable "address_space" {
+variable "vpn_cidr" {
   description = "The IP(s) or CIDR(s) for the VPN Point-to-Site configuration."
   type        = set(string)
 }
@@ -72,6 +76,7 @@ variable "address_space" {
 variable "aad_audience" {
   description = "The client ID of the Azure VPN application."
   type        = string
+  default     = "41b23e61-6c1e-4545-b367-cd054e0ed4b4"
 }
 
 variable "aad_issuer" {
@@ -98,9 +103,31 @@ variable "vpn_client_protocols" {
 variable "vpn_auth_types" {
   description = "A list of vpn authentication methods for the gateway."
   type        = set(string)
+  default     = ["AAD"]
 }
 
 variable "tags" {
   description = "The tags to apply to the resource."
   type        = map(any)
+}
+
+variable "firewall_cidr" {
+  description = "The CIDR for the Firewall subnet. This should be a /26 notation."
+  type        = set(string)
+}
+
+variable "peered_vnets" {
+  description = "The name and resource group for the Virtual Networks to peer with the VPN."
+  type = list(object({
+    rg_name   = string
+    vnet_name = string
+  }))
+}
+
+variable "private_dns_zones" {
+  description = "The name and resource group of the Private DNS Zones to which the VPN needs name resolution."
+  type = list(object({
+    rg_name   = string
+    pdns_name = string
+  }))
 }
