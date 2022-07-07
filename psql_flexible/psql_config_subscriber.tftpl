@@ -1,0 +1,15 @@
+do
+$$
+begin
+
+-- Configure the table with the same schema on the subscriber
+%{ for table in pub_tables ~}
+CREATE TABLE ${table}(id SERIAL, name varchar(40));
+%{ endfor ~}
+
+-- Connect the publication and the subscriber
+CREATE SUBSCRIPTION sub CONNECTION 'host=${server_name} user=${admin_name} dbname=${db_name} password="${admin_password}"' PUBLICATION pub;
+
+end
+$$
+;

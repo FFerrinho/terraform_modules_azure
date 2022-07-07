@@ -1,0 +1,15 @@
+do
+$$
+begin
+
+-- Grant the admin replication rights
+ALTER ROLE ${admin_name} WITH REPLICATION;
+
+-- Create publication for the relevant tables
+%{ for table in pub_tables ~}
+CREATE PUBLICATION pub FOR TABLE ${table};
+%{ endfor ~}
+
+end
+$$
+;
